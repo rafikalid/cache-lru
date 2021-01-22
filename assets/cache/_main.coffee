@@ -67,16 +67,14 @@ class FastLRU
 		if element= @_map.get key
 			@_refresh element
 			value= element.value
-			return value
 		else
 			value= @upsertCb key
+			@_set key, value
 			if value and typeof value.then is 'function'
-				return value.then (v)=>
+				value= value.then (v)=>
 					@_set key, v
 					return v
-			else
-				@_set key, value
-				return value
+		return value
 	###*
 	 * Refresh element
 	 * @private
